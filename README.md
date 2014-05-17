@@ -17,7 +17,7 @@ This cookbook is dependant on the following cookbooks, these are specified in bo
 
 ## Minimal node.json for a single host
 
-The cookbook is designed to be used for development sandboxes, simply use the default recipe and set the [lemp][database][password] attribute and you're ready to go.
+The cookbook is designed to work with development sandboxes, simply use the default recipe and set the _lemp.database.password_ attribute and you're ready to go.
 
 ```json
 {
@@ -61,18 +61,18 @@ _database.json_
 
 | Name | Default | Description |
 | --- | --- | --- |
-| [lemp][root_base] | /var/www/ | the base directory used for your applications |
-| [lemp][app_name] | lemp_app | name of your application, used to name hostfiles ,usernames and paths |
-| [lemp][app_root] | /var/www/#{node['lemp']['app_name']} | the public folder of your application |
-| [lemp][database][host] | localhost | hostname / ip address of your database server | 
-| [lemp][database][client] | localhost | hostname / ip address of your application. used when creating database users and fixing them to a hostname |
-| [lemp][database][username] | node['lemp']['app_name'] | username for your application's database user. |
-| [lemp][database][password] | Nil | Password for your application's database users, an error will be raised if you do not set this! |
-| [lemp][database][name] | [lemp][database][name] | name of your applications database |
-| [lemp][nginx_index] | ["index.php", "index.html"] | index file for your application |
-| [lemp][php_socket] | "127.0.0.1:9000" | The ip:port or socket php-fpm will listen on |
-| [lemp][php_options] | See php options subsection below | php option to be set for your php-fpm pool |
-| [lemp][php][packages] | See php packages below | php packages / extensions to be install via the package manager |
+| _lemp.root_base_ | /var/www/ | the base directory used for your applications |
+| _lemp.app_name_ | lemp_app | name of your application, used to name hostfiles ,usernames and paths |
+| _lemp.app_root_ | /var/www/#{node['lemp']['app_name']} | the public folder of your application |
+| _lemp.database.host_ | localhost | hostname / ip address of your database server | 
+| _lemp.database.client_ | localhost | hostname / ip address of your application. used when creating database users and fixing them to a hostname |
+| _lemp.database.username_ | node['lemp']['app_name'] | username for your application's database user. |
+| _lemp.database.password_ | Nil | Password for your application's database users, an error will be raised if you do not set this! |
+| _lemp.database.name_ | node['lemp']['database']['name'] | name of your applications database |
+| _lemp.nginx_index_ | ["index.php", "index.html"] | index file for your application |
+| _lemp.php_socket_ | "127.0.0.1:9000" | The ip:port or socket php-fpm will listen on |
+| _lemp.php_options_ | See php options subsection below | php option to be set for your php-fpm pool |
+| _lemp.php.packages_ | See php packages below | php packages / extensions to be install via the package manager |
 
 ## php options
 
@@ -91,7 +91,7 @@ I have only implemented Ubuntu PHP packages so far.
 
 ### ubuntu packages
 
-Some of these will be removed shortly leaving packages up to whoever is implementing this cookbook.
+Some of these will be removed shortly, leaving packages up to whoever is implementing this cookbook.
 
 - php5-cli
 - php5-dev
@@ -105,23 +105,23 @@ Some of these will be removed shortly leaving packages up to whoever is implemen
 
 ## default
 
-This is the go to file if you want to install everything on a single host, otherwise use the recipes for the parts you need.
+This is the go to recipe if you want to install everything on a single host, otherwise use the recipes for the parts you need.
 
 ## mysql
 
-Depends on the mysql and database cookbooks
+Depends on the __mysql__ and __database__ cookbooks
 
 Some mysql cookbook attributes are overridden here for security and convenience 
 
-- Creates the application database using the [lemp][database][name] or [lemp][app_name] attributes.
-- Creates a user for your application using [lemp][database][username] or [lemp][app_name] attributes.
-- Grants the application database user access to the application database using [lemp][database][username], [lemp][database][name], [lemp][database][client] and [lemp][database][password]. 
+- Creates the application database using the _lemp.database.name_ or _lemp.app_name_ attributes.
+- Creates a user for your application using _lemp.database.username_ or _lemp.app_name_ attributes.
+- Grants the application database user access to the application database using _lemp.database.username_, _lemp.database.name_, _lemp.database.client_ and _lemp.database.password_. 
 
-In future this recipe will be hardened, restricting the application from running DDL queries. Another database user will be created for this, you will need to configure your migrations to use this database user.
+In future this recipe will be hardened, restricting the application from running DDL statements. Another database user will be created for this, you will need to configure your migrations to use this database user.
 
 ## nginx
 
-Depends on the nginx cookbook
+Depends on the __nginx__ cookbook
 
 Some nginx cookbook attributes are override here to remove the detault site.
 
@@ -130,9 +130,9 @@ Some nginx cookbook attributes are override here to remove the detault site.
 
 ## php
 
-Depends on the php-fpm cookbook
+Depends on the __php-fpm__ cookbook
 
-- Installs additional php packages specified in the [lemp][php][packages] attribute.
+- Installs additional php packages specified in the _lemp.php.packages_ attribute.
 - Disables the default pool
 - Creates a pool for your application
 
