@@ -1,0 +1,60 @@
+server {
+  listen <%= @params[:listen] ? @params[:listen] : node['lemp']['nginx_listen'] %>;
+  server_name <%= @params[:server_names].join(" ") %>;
+  root <%= @params[:root] ? @params[:root] : node['lemp']['app_root'] %>;
+  index <%= @params[:index] ? @params[:index].join(" ") : node['lemp']['nginx_index'].join(" ") %>;
+
+  # error pages
+  error_page 404 /404.html;
+  error_page 500 502 503 504 /50x.html;
+
+  location = /50x.html {
+    root <%= @params[:root] ? @params[:root] : node['lemp']['app_root'] %>;
+  }
+
+  # rewrite for php frameworks
+  location @<%= @params[:name] %> {
+    rewrite ^ /index.php?/$request_uri;
+  }
+
+  location / {
+    root <%= @params[:root] ? @params[:root] : node['lemp']['app_root'] %>;
+    index <%= @params[:index].join(" ") %>;
+    try_files $uri $uri/ @<%= @params[:name] %>;
+  <% if @params[:expires] -%>
+    expires <%= @params[:expires] %>;
+  <% end -%>
+  }
+
+  location ~ \.php$ {
+    try_files $uri =404;
+    fastcgi_pass <%= @params[:socket] ? @params[:socket] : node['lemp']['php_socket'] %>;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    include fastcgi_params;
+    root <%= @params[:root] ? @params[:root] : node['lemp']['app_root'] %>;
+  }
+
+  ## removes trailing slashes to prevents SEO duplicate content issues
+  if (!-d $request_filename) {
+      rewrite ^/(.+)/$ /$1 permanent;
+  }
+<% if @params[:no_www] -%>
+  # enforce no www in url
+  if ($host ~* ^www\.(.*)) {
+        set $host_without_www $1;
+        rewrite ^/(.*)$ $scheme://$host_without_www/$1 permanent;
+  }
+<% end -%>
+
+  ## security
+  location ~ /\.ht { 
+    deny all; 
+  }
+  
+  ## Do not allow php execution in directories with UGC   
+  location /ugc-directory-path {
+    location ~ \.php$ {
+      return 403;
+    }
+  }
+}
