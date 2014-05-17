@@ -50,7 +50,7 @@ _database.json_
 	"runlist": ["recipe[lemp::mysql]"],
 	"lemp": {
 		"database": {
-			"client": "application_hostname"
+			"client": "application_hostname",
 			"password": "G!v3M3aPa$$w0r|)Ple4$3"
 		}
 	}
@@ -76,7 +76,7 @@ _database.json_
 
 ## php options
 
-Some additiona effort is required here to determine the most sensible defaults.
+Some additional effort is required here to determine sensible defaults.
 
 ### defaults
 
