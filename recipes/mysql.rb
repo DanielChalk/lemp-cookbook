@@ -37,7 +37,7 @@ raise "node['lemp']['database']['password'] must be set" unless node['lemp']['da
 # Nows lets start installing stuff
 include_recipe "mysql::server"
 include_recipe "mysql::client"
-include_recipe "mysql::ruby"
+include_recipe "database::mysql"
 
 include_recipe "database"
 
