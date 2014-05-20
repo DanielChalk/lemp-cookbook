@@ -32,7 +32,8 @@ if platform?("debian", "ubuntu")
 	"php5-mcrypt",
 	"php5-memcache",
 	"php5-mhash",
-	"php5-imagick"
+	"php5-imagick",
+	"php5-mysqlnd"
   ]
 end
  
