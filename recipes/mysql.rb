@@ -39,8 +39,6 @@ include_recipe "mysql::server"
 include_recipe "mysql::client"
 include_recipe "database::mysql"
 
-include_recipe "database"
-
 # Root connection details so we can start creating users and databases
 root_mysql_info = {
 	:host  => 'localhost',

@@ -6,9 +6,9 @@ description 'LEMP environment'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '0.1.0'
 
-supports "ubuntu"
+supports "centos"
 
 depends "nginx"
-depends "php-fpm"
+depends "php54"
 depends "mysql"
 depends "database"

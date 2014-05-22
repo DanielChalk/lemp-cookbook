@@ -24,16 +24,7 @@ default['lemp']['php_options'] = {
 	'php_admin_value[memory_limit]' => '64M'
 }
 
-if platform?("debian", "ubuntu")
-  default['lemp']['php']['packages'] = [
-	"php5-cli",
-	"php5-dev",
-	"php5-gd",
-	"php5-mcrypt",
-	"php5-memcache",
-	"php5-mhash",
-	"php5-imagick",
-	"php5-mysqlnd"
-  ]
+if platform?("rhel", "centos", "fedora")
+  default['lemp']['php']['packages'] = ["cli" ,"gd", "mcrypt", "mhash", "mysqlnd"]
 end
  

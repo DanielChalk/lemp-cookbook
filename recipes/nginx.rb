@@ -28,6 +28,14 @@ node.set['lemp']['app_root'] = "/var/www/#{node['lemp']['app_name']}" unless nod
 
 include_recipe "nginx"
 
+# default_site_enabled has no effect on rhel based systems
+if  platform?('rhel', 'centos', 'fedora')
+	file "#{node['nginx']['dir']}/conf.d/default.conf" do
+		action :delete
+		notifies :restart, "service[nginx]"
+	end
+end
+
 directory node['lemp']['app_root'] do
 	owner node['nginx']['user']
 	group node['nginx']['group']

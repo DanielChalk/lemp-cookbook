@@ -30,8 +30,8 @@ define :lemp_site, :action => :enable, :index => ["index.php"], :listen => 80, :
 		params[:socket] = node['lemp']['php_socket'] unless params[:socket]
 
 		directory params[:root] do
-			owner "www-data"
-			group "www-data"
+			owner node['nginx']['group']
+			group node['nginx']['group']
 			mode "0755"
 			action :create
 		end
@@ -40,8 +40,8 @@ define :lemp_site, :action => :enable, :index => ["index.php"], :listen => 80, :
 		template "#{node['nginx']['dir']}/sites-available/#{params[:name]}" do
 			source "nginxsite.erb";
 			mode 0644
-			owner "www-data"
-			group "www-data"
+			owner node['nginx']['user']
+			group node['nginx']['group']
 			cookbook params[:cookbook] if params[:cookbook]
 			variables :params => params
 			action :create
@@ -51,6 +51,6 @@ define :lemp_site, :action => :enable, :index => ["index.php"], :listen => 80, :
 	# enable / disable the application
 	nginx_site params[:name] do
 		action params[:action]
-    end
-
+   	 end
+   	 
 end

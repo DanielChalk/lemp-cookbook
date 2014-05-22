@@ -23,22 +23,22 @@
 # THE SOFTWARE.
 
 # get our php packages installed
+
+include_recipe "php54"
+
 node['lemp']['php']['packages'].each do |pkg|
-	package pkg do
+	php_package pkg do 
 		action :install
 	end
 end
 
-# remove the default
-php_fpm_pool "www" do
-	enable :false
-end
-
 # add our own socket
 php_fpm_pool node['lemp']['app_name'] do
+  listen node['lemp']['php_socket']
+  user node['nginx']['user']
+  group node['nginx']['user']
   process_manager "dynamic"
   max_requests 5000
   php_options node['lemp']['php_options']
   enable :true
-  listen node['lemp']['php_socket']
 end
