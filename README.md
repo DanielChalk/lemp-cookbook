@@ -1,14 +1,12 @@
 # lemp cookbook
 
-Linux Nginx MySQL PHP cookbook
-
-This cookbook currently only supports Ubuntu but I can't see why it wouldn't work on other distributions.
+Linux Nginx MySQL PHP cookbook for CentOS fedora
 
 # Requirements
 
 This cookbook is dependant on the following cookbooks, these are specified in both Berksfile and metadata.rb:
 
-- php-fpm
+- php54
 - nginx
 - mysql
 - database
@@ -94,12 +92,9 @@ I have only implemented Ubuntu PHP packages so far.
 Some of these will be removed shortly, leaving packages up to whoever is implementing this cookbook.
 
 - php5-cli
-- php5-dev
 - php5-gd
 - php5-mcrypt
-- php5-memcache
-- php5-mhash
-- php5-imagick
+- php5-mysqlnd
 
 # Recipes
 
