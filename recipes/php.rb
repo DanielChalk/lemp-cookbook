@@ -35,8 +35,8 @@ end
 # add our own socket
 php_fpm_pool node['lemp']['app_name'] do
   listen node['lemp']['php_socket']
-  user node['nginx']['user']
-  group node['nginx']['user']
+  user node['lemp']['user'] ? node['lemp']['user'] : node['nginx']['user']
+  group node['lemp']['group'] ? node['lemp']['group'] : node['nginx']['group']
   process_manager "dynamic"
   max_requests 5000
   php_options node['lemp']['php_options']
